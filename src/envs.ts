@@ -1,6 +1,7 @@
 export const Envs = [
   "ALLOWED_GROUPS",
   "AUTO_SEEN_GROUPS",
+  "HANDLERS",
   "OPENAI_API_KEY",
   "SESSION_NAME",
 ] as const;

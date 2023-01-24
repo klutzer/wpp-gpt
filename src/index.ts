@@ -1,8 +1,21 @@
 import { config } from "dotenv";
+import { getEnv } from "@/envs";
 import { WhatsappBot } from "@/whatsapp-bot";
-import { WhatsappAIHandler } from "@/handler/whatsapp-ai-handler";
+import * as handlers from "@/handler";
+import { chain, isEmpty, isUndefined } from "lodash";
 
 config();
 
-// Add WhatsappListGroups handler to list all groups with their IDs
-new WhatsappBot([WhatsappAIHandler]).create();
+const handlersClasses = 
+  chain(getEnv("HANDLERS")?.split(",") ?? [])
+  .map((handlerName) => handlers[handlerName as keyof typeof handlers])
+  .filter((value) => !isUndefined(value))
+  .value();
+
+if (isEmpty(handlersClasses)) {
+  console.error("No valid handler found. Please check HANDLERS env variable.");
+  console.log("Available handlers: ", Object.keys(handlers));
+  process.exit(1);
+}
+
+new WhatsappBot(handlersClasses).create();
