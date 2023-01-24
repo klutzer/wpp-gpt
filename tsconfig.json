@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "allowJs": false,
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "strictNullChecks": false,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "target": "ES2022",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "src",
+    "esModuleInterop": true,
+    "incremental": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "paths": {
+      "@/*": ["*"]
+    }
+  }
+}
