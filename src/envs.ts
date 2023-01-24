@@ -1,7 +1,8 @@
 export const Envs = [
-  "SESSION_NAME",
-  "OPENAI_API_KEY",
   "ALLOWED_GROUPS",
+  "AUTO_SEEN_GROUPS",
+  "OPENAI_API_KEY",
+  "SESSION_NAME",
 ] as const;
 export type Envs = (typeof Envs)[number];
 

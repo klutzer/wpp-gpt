@@ -1,11 +1,10 @@
+import { getEnv } from "@/envs";
 import { WhatsappHandler } from "@/handler/whatsapp-handler";
 import { Message, Whatsapp } from "@wppconnect-team/wppconnect";
 
 export class WhatsappAutoSeenGroups extends WhatsappHandler {
-  private readonly autoSeenGroups = [
-    "554796629398-1557803446@g.us",
-    "554791224756-1474478089@g.us",
-  ];
+  private readonly autoSeenGroups = getEnv("AUTO_SEEN_GROUPS")?.split(",") ?? [];
+
   constructor(client: Whatsapp) {
     super(client);
   }
