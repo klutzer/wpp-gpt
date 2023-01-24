@@ -9,7 +9,11 @@ export class WhatsappAutoSeenGroups extends WhatsappHandler {
     super(client);
   }
 
-  async handle(): Promise<void> {
+  disposable(): boolean {
+    return false;
+  }
+
+  async handle() {
     this.client.onMessage(async (message: Message) => {
       if (message.isGroupMsg && this.autoSeenGroups.includes(message.chatId)) {
         console.log("Setting seen: ", message.chatId);

@@ -16,7 +16,11 @@ export class WhatsappAIHandler extends WhatsappHandler {
     this.contactHandler = new ContactHandler(client);
   }
 
-  async handle(): Promise<void> {
+  disposable(): boolean {
+    return false;
+  }
+
+  async handle() {
     this.client.onAnyMessage(async (message: Message) => {
       if (message.isGroupMsg && !message.sender.isMe && !this.allowedGroups.includes(message.chatId)) {
         return;
@@ -27,7 +31,7 @@ export class WhatsappAIHandler extends WhatsappHandler {
           const text = message.body.substring(TEXT.length);
           await this.printMessage(message);
           const result = await this.gptApi.complete(text);
-          await this.client.sendText(message.chatId, `*AI response*:\n\n${result.trim()}`);
+          await this.client.sendText(message.chatId, `*AI response:*\n\n${result.trim()}`);
         }
         if (message.body?.startsWith(IMAGE)) {
           const text = message.body.substring(IMAGE.length);

@@ -7,6 +7,10 @@ export class WhatsappListGroups extends WhatsappHandler {
     super(client);
   }
 
+  disposable(): boolean {
+    return true;
+  }
+
   async handle(): Promise<void> {
     console.log("Listing groups...");
     const groups = (await this.client.getAllGroups())
@@ -14,8 +18,7 @@ export class WhatsappListGroups extends WhatsappHandler {
         name: group.name ?? get(group.groupMetadata, "subject"),
         id: group.id._serialized,
       }))
-      .sort((group1, group2) => group1.name.localeCompare(group2.name));
+      .sort((group1, group2) => group1.name?.localeCompare(group2.name));
     console.table(groups);
-    await this.client.close();
   }
 }
