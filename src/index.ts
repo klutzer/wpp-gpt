@@ -1,3 +1,5 @@
+import "source-map-support/register";
+
 import { config } from "dotenv";
 import { getEnv } from "@/envs";
 import { WhatsappBot } from "@/whatsapp-bot";

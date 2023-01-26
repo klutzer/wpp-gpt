@@ -28,10 +28,11 @@ export class WhatsappBot {
       const instance = new handler(client);
       allDisposable = allDisposable && instance.disposable();
       return instance.handle();
-    }));
-    if (allDisposable) {
-      await client.close();
-    }
+    })).finally(async () => {
+      if (allDisposable) {
+        await client.close();
+      }
+    });
   }
 }
 

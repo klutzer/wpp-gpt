@@ -5,7 +5,7 @@
     "clean": "rimraf dist",
     "build": "yarn clean && tsup src/index.ts --sourcemap",
     "build:tsc": "yarn clean && tsc && tsc-alias",
-    "start:watch": "tsup src/index.ts --watch --onSuccess \"yarn start\"",
+    "start:watch": "yarn build --watch --onSuccess \"yarn start\"",
     "start": "node dist"
   },
   "devDependencies": {
@@ -20,6 +20,7 @@
     "@wppconnect-team/wppconnect": "^1.20.0",
     "dotenv": "^16.0.3",
     "lodash": "^4.17.21",
-    "openai": "^3.1.0"
+    "openai": "^3.1.0",
+    "source-map-support": "^0.5.21"
   }
 }
