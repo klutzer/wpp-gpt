@@ -22,6 +22,7 @@ Os handlers são basicamente as funcionalidades que o bot pode ter. Cada handler
 | ------- | --------- | ----------- |
 | **ai** | WhatsappAIHandler | Handler que utiliza a API da OpenAI para responder as mensagens. |
 | **auto_seen_groups** | WhatsappAutoSeenGroups | Marca as mensagens de grupos "indesejados" como lidas automaticamente. |
+| **list_contacts** | WhatsappListContacts | Lista todos os contatos de conversa do usuário logado (bot). |
 | **list_groups** | WhatsappListGroups | Lista todos os grupos do usuário logado (bot). |
 
 ## :running_man: Execução
