@@ -13,7 +13,7 @@ export class WhatsappListContacts extends WhatsappHandler {
   async handle(): Promise<void> {
     console.log("Listing contacts...");
     const contacts = (await this.client.getAllContacts())
-      .filter((contact) => contact.isUser && !contact.isMyContact)
+      .filter((contact) => contact.isUser)
       .map((contact) => ({
         name: contact.name ?? `${contact.formattedName} - ${contact.pushname}`,
         id: contact.id._serialized,
