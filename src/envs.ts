@@ -1,4 +1,5 @@
 export const Envs = [
+  "AI_WHITELIST",
   "ALLOWED_GROUPS",
   "AUTO_SEEN_GROUPS",
   "HANDLERS",
