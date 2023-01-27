@@ -3,6 +3,7 @@ import { ContactHandler } from "@/handler/contact-handler";
 import { WhatsappHandler } from "@/handler/whatsapp-handler";
 import { GptApi } from "@/openai";
 import { Message, Whatsapp } from "@wppconnect-team/wppconnect";
+import { isEmpty } from 'lodash';
 
 const TEXT = "text: ";
 const IMAGE = "image: ";
@@ -10,6 +11,7 @@ const IMAGE = "image: ";
 export class WhatsappAIHandler extends WhatsappHandler {
   private readonly gptApi = new GptApi();
   private readonly allowedGroups = getEnv("ALLOWED_GROUPS")?.split(",") ?? [];
+  private readonly whiteList = getEnv("AI_WHITELIST")?.split(",") ?? [];
   private readonly contactHandler;
   constructor(client: Whatsapp) {
     super(client);
@@ -22,9 +24,10 @@ export class WhatsappAIHandler extends WhatsappHandler {
 
   async handle() {
     this.client.onAnyMessage(async (message: Message) => {
-      if (message.isGroupMsg && !message.sender.isMe && !this.allowedGroups.includes(message.chatId)) {
+      if (this.isMissingAllowedGroup(message) || this.isMissingUserInWhitelist(message)) {
         return;
       }
+
       try {
         await this.client.startTyping(message.chatId);
         if (message.body?.startsWith(TEXT)) {
@@ -45,6 +48,17 @@ export class WhatsappAIHandler extends WhatsappHandler {
         await this.client.stopTyping(message.chatId);
       }
     });
+  }
+
+  private isMissingAllowedGroup(message: Message) {
+    return message.isGroupMsg && !message.sender.isMe && !this.allowedGroups.includes(message.chatId);
+  }
+
+  private isMissingUserInWhitelist(message: Message) {
+    return !message.isGroupMsg
+      && !message.sender.isMe
+      && !isEmpty(this.whiteList)
+      && !this.whiteList.includes(message.chatId);
   }
 
   private async printMessage(message: Message) {
