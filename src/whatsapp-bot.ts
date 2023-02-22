@@ -4,7 +4,7 @@ import { WhatsappHandler } from "@/handler/whatsapp-handler";
 
 type Newable<T> = new (client: Whatsapp) => T;
 
-//defaultLogger.level = "silly";
+defaultLogger.level = "info";
 
 export class WhatsappBot {
   constructor(private readonly handlers: Newable<WhatsappHandler>[]) {}

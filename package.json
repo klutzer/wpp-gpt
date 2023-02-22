@@ -10,14 +10,14 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.14.186",
-    "@types/node": "^18.11.1",
+    "@types/node": "^18.14.0",
     "rimraf": "^4.1.2",
     "tsc-alias": "^1.8.2",
-    "tsup": "^6.5.0",
-    "typescript": "^4.8.4"
+    "tsup": "^6.6.3",
+    "typescript": "^4.9.5"
   },
   "dependencies": {
-    "@wppconnect-team/wppconnect": "^1.20.0",
+    "@wppconnect-team/wppconnect": "^1.22.0",
     "dotenv": "^16.0.3",
     "lodash": "^4.17.21",
     "openai": "^3.1.0",
