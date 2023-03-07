@@ -1,9 +1,9 @@
-import { Envs } from "@/envs";
+import { Configs } from "@/config";
 import { WhatsappHandler } from "@/handler/whatsapp-handler";
 import { Message, Whatsapp } from "@wppconnect-team/wppconnect";
 
 export class WhatsappAutoSeenGroups extends WhatsappHandler {
-  private readonly autoSeenGroups = Envs.autoSeenGroups;
+  private readonly autoSeenGroups = Configs.autoSeenGroups;
 
   constructor(client: Whatsapp) {
     super(client);

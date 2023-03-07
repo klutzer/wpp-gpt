@@ -1,4 +1,4 @@
-import { Envs } from "@/envs";
+import { Configs } from "@/config";
 import { ContactHandler } from "@/handler/contact-handler";
 import { WhatsappHandler } from "@/handler/whatsapp-handler";
 import { GptApi } from "@/openai";
@@ -10,8 +10,8 @@ const IMAGE = "image: ";
 
 export class WhatsappAIHandler extends WhatsappHandler {
   private readonly gptApi = new GptApi();
-  private readonly allowedGroups = Envs.ai.allowedGroups;
-  private readonly whiteList = Envs.ai.whitelist;
+  private readonly allowedGroups = Configs.ai.allowedGroups;
+  private readonly whiteList = Configs.ai.whitelist;
   private readonly contactHandler;
   constructor(client: Whatsapp) {
     super(client);

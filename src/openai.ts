@@ -1,4 +1,4 @@
-import { Envs } from "@/envs";
+import { Configs } from "@/config";
 import { takeRight } from "lodash";
 import { ChatCompletionRequestMessage, Configuration, CreateImageRequestSizeEnum, OpenAIApi } from "openai/dist";
 
@@ -7,7 +7,7 @@ export class GptApi {
   private readonly previousMessages = new Map<string, ChatCompletionRequestMessage[]>();
   constructor() {
     this.api = new OpenAIApi(new Configuration({
-      apiKey: Envs.ai.openaiApiKey,
+      apiKey: Configs.ai.openaiApiKey,
     }));
   }
 
@@ -33,7 +33,7 @@ export class GptApi {
     });
     const responseMessage = response.data.choices[0].message?.content.trim()!;
     this.previousMessages.set(user, [
-      ...takeRight(messages, 2 * Envs.ai.chatHistorySize - 1),
+      ...takeRight(messages, 2 * Configs.ai.chatHistorySize - 1),
       { content: responseMessage, role: "assistant" }
     ]);
     return responseMessage;

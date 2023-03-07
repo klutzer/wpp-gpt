@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const EnvsKey = [
+const ConfigKeys = [
   "AI_WHITELIST",
   "ALLOWED_GROUPS",
   "AUTO_SEEN_GROUPS",
@@ -9,14 +9,14 @@ const EnvsKey = [
   "OPENAI_API_KEY",
   "SESSION_NAME",
 ] as const;
-type EnvsKey = (typeof EnvsKey)[number];
+type ConfigKeys = (typeof ConfigKeys)[number];
 
 const DECIMAL_RADIX = 10;
 
 const stringCsvToArray = () =>
   z.string().optional().transform((data) => data?.split(",") ?? []);
 
-const EnvsSchema = z.object({
+const ConfigSchema = z.object({
   ai: z.object({
     whitelist: stringCsvToArray(),
     allowedGroups: stringCsvToArray(),
@@ -28,7 +28,7 @@ const EnvsSchema = z.object({
   sessionName: z.string().default("teste"),
 });
 
-export const Envs = EnvsSchema.parse({
+export const Configs = ConfigSchema.parse({
   ai: {
     whitelist: process.env["AI_WHITELIST"],
     allowedGroups: process.env["ALLOWED_GROUPS"],
@@ -40,8 +40,8 @@ export const Envs = EnvsSchema.parse({
   sessionName: process.env["SESSION_NAME"],
 });
 
-export const printEnvs = () => {
-  EnvsKey.forEach((env) => {
+export const printConfigs = () => {
+  ConfigKeys.forEach((env) => {
     console.log(`${env}: ${process.env[env]}`);
   });
 }
