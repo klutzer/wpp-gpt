@@ -6,7 +6,7 @@
     "build": "yarn clean && tsup src/index.ts --sourcemap",
     "build:tsc": "yarn clean && tsc && tsc-alias",
     "start:watch": "yarn build --watch --onSuccess \"yarn start\"",
-    "start": "node dist"
+    "start": "node -r dotenv/config dist"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.186",
@@ -21,6 +21,7 @@
     "dotenv": "^16.0.3",
     "lodash": "^4.17.21",
     "openai": "^3.2.1",
-    "source-map-support": "^0.5.21"
+    "source-map-support": "^0.5.21",
+    "zod": "^3.21.4"
   }
 }
