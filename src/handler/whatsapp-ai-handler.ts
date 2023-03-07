@@ -33,8 +33,8 @@ export class WhatsappAIHandler extends WhatsappHandler {
         if (message.body?.startsWith(TEXT)) {
           const text = message.body.substring(TEXT.length);
           await this.printMessage(message);
-          const result = await this.gptApi.complete(text);
-          await this.client.sendText(message.chatId, `*AI response:*\n\n${result.trim()}`);
+          const result = await this.gptApi.complete(text, message.chatId);
+          await this.client.sendText(message.chatId, `*AI response:*\n\n${result}`);
         }
         if (message.body?.startsWith(IMAGE)) {
           const text = message.body.substring(IMAGE.length);

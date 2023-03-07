@@ -11,6 +11,7 @@ Bot do whatsapp para uso integrado com a API da OpenAI, desenvolvido em NodeJS e
 | `AI_WHITELIST` | ai | Lista de usuários em que o bot pode ser utilizado via DM. A lista deve conter o ID dos usuários, esse ID segue o seguinte formato (*número do telefone completo*@c.us). Ex: `5511998765432@c.us`. Se essa env não for definida, todos os usuários da DM podem utilizar o bot. | |
 | `ALLOWED_GROUPS` | ai  | Lista de grupos em que o bot pode ser utilizado. Para obter o ID de cada grupo, mude o handler no `index.ts` para `WhatsappListGroups`, onde todos os grupos serão listados com os seus respectivos IDs. | |
 | `AUTO_SEEN_GROUPS` | auto_seen_groups | Lista de grupos em que o bot deve marcar as mensagens como lidas automaticamente. | |
+| `CHAT_HISTORY_SIZE` | ai | Quantidade de mensagens do bot que serão utilizadas para gerar a próxima resposta contextual (Padrão: 3) | |
 | `HANDLERS` | * | Lista de handlers que serão utilizados, separados por vírgula (ver na tabela abaixo). | :heavy_check_mark: |
 | `OPENAI_API_KEY` | ai | Chave de API da OpenAI. Para criar uma, é necessário ter uma conta criada na OpenAI. O token pode ser gerado [aqui](https://beta.openai.com/account/api-keys). | :heavy_check_mark: |
 | `SESSION_NAME` | * | Nome que identifica a sessão no whatsapp. Após fazer a leitura do QR Code na primeira execução, a sessão ficará salva localmente no diretório `tokens/<session-name>`, na raiz do projeto. | :heavy_check_mark: |
