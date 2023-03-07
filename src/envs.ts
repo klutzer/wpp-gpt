@@ -2,6 +2,7 @@ export const Envs = [
   "AI_WHITELIST",
   "ALLOWED_GROUPS",
   "AUTO_SEEN_GROUPS",
+  "CHAT_HISTORY_SIZE",
   "HANDLERS",
   "OPENAI_API_KEY",
   "SESSION_NAME",

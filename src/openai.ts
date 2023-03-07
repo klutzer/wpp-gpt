@@ -1,8 +1,10 @@
 import { getEnv } from "@/envs";
-import { Configuration, CreateImageRequestSizeEnum, OpenAIApi } from "openai/dist";
+import { takeRight } from "lodash";
+import { ChatCompletionRequestMessage, Configuration, CreateImageRequestSizeEnum, OpenAIApi } from "openai/dist";
 
 export class GptApi {
   private readonly api: OpenAIApi;
+  private readonly previousMessages = new Map<string, ChatCompletionRequestMessage[]>();
   constructor() {
     this.api = new OpenAIApi(new Configuration({
       apiKey: getEnv("OPENAI_API_KEY"),
@@ -14,16 +16,27 @@ export class GptApi {
     return models.data.data.map((model) => model.id).sort();
   }
 
-  async complete(prompt: string, user?: string) {
-    const response = await this.api.createCompletion({
-      model: "text-davinci-003",
-      best_of: 1,
+  async complete(prompt: string, user: string) {
+    const messages = [
+      ...this.previousMessages.get(user) ?? [],
+      {
+        content: prompt,
+        role: "user",
+      },
+    ] satisfies ChatCompletionRequestMessage[];
+    const response = await this.api.createChatCompletion({
+      messages,
+      model: "gpt-3.5-turbo",
+      temperature: 0.85,
       max_tokens: 3096,
-      temperature: 0.9,
-      prompt,
       user,
-    })
-    return response.data.choices[0].text;
+    });
+    const responseMessage = response.data.choices[0].message.content.trim();
+    this.previousMessages.set(user, [
+      ...takeRight(messages, 2 * parseInt(getEnv("CHAT_HISTORY_SIZE") ?? "3", 10) - 1),
+      { content: responseMessage, role: "assistant" }
+    ]);
+    return responseMessage;
   }
 
   async generateImage(prompt: string, imageCount = 1, size: CreateImageRequestSizeEnum = "256x256") {
