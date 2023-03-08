@@ -1,4 +1,4 @@
-import { getEnv } from "@/envs";
+import { Configs } from "@/config";
 import { create,  defaultLogger, Message, Whatsapp } from "@wppconnect-team/wppconnect";
 import { WhatsappHandler } from "@/handler/whatsapp-handler";
 
@@ -14,7 +14,7 @@ export class WhatsappBot {
       .format(this.handlers.map((handler) => handler.name));
     console.log(`Registered handler(s): ${handlersName}`)
     return create({
-      session: getEnv("SESSION_NAME"),
+      session: Configs.sessionName,
     })
     .then(this.startAllHandlers.bind(this))
     .catch((error) => {

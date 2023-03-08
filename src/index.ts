@@ -1,15 +1,12 @@
 import "source-map-support/register";
 
-import { config } from "dotenv";
-import { getEnv } from "@/envs";
+import { Configs } from "@/config";
 import { WhatsappBot } from "@/whatsapp-bot";
 import * as handlers from "@/handler";
 import { chain, isEmpty, isUndefined } from "lodash";
 
-config();
-
 const handlersClasses = 
-  chain(getEnv("HANDLERS")?.split(",") ?? [])
+  chain(Configs.handlers)
   .map((handlerName) => handlers[handlerName as keyof typeof handlers])
   .filter((value) => !isUndefined(value))
   .value();
