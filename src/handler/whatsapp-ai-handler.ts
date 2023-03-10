@@ -1,12 +1,12 @@
+import { convertOggToM4a } from "@/audio/transcoder";
 import { Configs } from "@/config";
 import { ContactHandler } from "@/handler/contact-handler";
 import { WhatsappHandler } from "@/handler/whatsapp-handler";
 import { GptApi } from "@/openai";
 import { Message, Whatsapp } from "@wppconnect-team/wppconnect";
-import { isEmpty } from 'lodash';
+import { get, isEmpty } from 'lodash';
 
-const TEXT = "text: ";
-const IMAGE = "image: ";
+type ActionType = "text" | "image" | "transcript";
 
 export class WhatsappAIHandler extends WhatsappHandler {
   private readonly gptApi = new GptApi();
@@ -18,6 +18,35 @@ export class WhatsappAIHandler extends WhatsappHandler {
     this.contactHandler = new ContactHandler(client);
   }
 
+  private actions: { [key in ActionType]: (message: Message, text: string) => Promise<void> } = {
+    text: async (message: Message, text: string) => {
+      const result = await this.gptApi.complete(text, message.chatId);
+      await this.client.sendText(message.chatId, `*AI response:*\n\n${result}`);
+    },
+    image: async (message: Message, text: string) => {
+      const result = await this.gptApi.generateImage(text, 2);
+      await Promise.all(
+        result.map((url, i) => this.client.sendImage(message.chatId, url.trim(), `image-${i}.png`)),
+      );
+    },
+    transcript: async (message: Message) => {
+      const quotedMessage = get(message, "quotedMsg") as unknown as Message;
+      if (!quotedMessage || !["ptt", "audio"].includes(quotedMessage.type)) {
+        await this.client.sendText(message.chatId, `*AI transcription (no audio):* _Referencie o áudio que você quer transcrever_`);
+        return;
+      }
+      try {
+        const audio = await this.client.decryptFile(quotedMessage);
+        const stream = await convertOggToM4a(audio, message.chatId);
+        const result = await this.gptApi.createTranscription(stream);
+        await this.client.sendText(message.chatId, `*AI transcription:*\n\n${result}`);
+      } catch (error: any) {
+        console.error(error);
+        await this.client.sendText(message.chatId, `*AI transcription ERROR:* _${error?.message ?? error}_`);
+      }
+    },
+  };
+
   disposable(): boolean {
     return false;
   }
@@ -27,23 +56,13 @@ export class WhatsappAIHandler extends WhatsappHandler {
       if (this.isMissingAllowedGroup(message) || this.isMissingUserInWhitelist(message)) {
         return;
       }
-
       try {
         await this.client.startTyping(message.chatId);
-        if (message.body?.startsWith(TEXT)) {
-          const text = message.body.substring(TEXT.length);
+        const requestedActions = Object.getOwnPropertyNames(this.actions).filter((value) => message.body?.startsWith(`${value}:`)) as ActionType[];
+        await Promise.all(requestedActions.map(async (actionType) => {
           await this.printMessage(message);
-          const result = await this.gptApi.complete(text, message.chatId);
-          await this.client.sendText(message.chatId, `*AI response:*\n\n${result}`);
-        }
-        if (message.body?.startsWith(IMAGE)) {
-          const text = message.body.substring(IMAGE.length);
-          await this.printMessage(message);
-          const result = await this.gptApi.generateImage(text, 2);
-          await Promise.all(
-            result.map((url, i) => this.client.sendImage(message.chatId, url.trim(), `image-${i}.png`)),
-          );
-        }
+          await this.actions[actionType](message, message.body?.substring(actionType.length + 1)?.trim() ?? "");
+        }));
       } finally {
         await this.client.stopTyping(message.chatId);
       }
