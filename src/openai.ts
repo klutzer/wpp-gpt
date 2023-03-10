@@ -1,5 +1,7 @@
 import { Configs } from "@/config";
-import { takeRight } from "lodash";
+import { isString, takeRight } from "lodash";
+import { ReadStream } from "node:fs";
+import { Readable } from "node:stream";
 import { ChatCompletionRequestMessage, Configuration, CreateImageRequestSizeEnum, OpenAIApi } from "openai/dist";
 
 export class GptApi {
@@ -48,4 +50,12 @@ export class GptApi {
     });
     return response.data.data.map((data) => data.url!);
   };
+
+  async createTranscription(file: ReadStream | Readable) {
+    const response = await this.api.createTranscription(file as any, "whisper-1", undefined, "text", 0.5, "pt");
+    if (isString(response.data)) {
+      return response.data.trim();
+    }
+    throw new Error("Não foi possível transcrever este áudio");
+  }
 }

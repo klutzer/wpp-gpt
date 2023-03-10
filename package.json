@@ -9,16 +9,18 @@
     "start": "node -r dotenv/config dist"
   },
   "devDependencies": {
+    "@types/fluent-ffmpeg": "^2.1.21",
     "@types/lodash": "^4.14.186",
-    "@types/node": "^18.14.6",
-    "rimraf": "^4.3.1",
-    "tsc-alias": "^1.8.2",
+    "@types/node": "^18.15.0",
+    "rimraf": "^4.4.0",
+    "tsc-alias": "^1.8.3",
     "tsup": "^6.6.3",
     "typescript": "^4.9.5"
   },
   "dependencies": {
     "@wppconnect-team/wppconnect": "^1.22.0",
     "dotenv": "^16.0.3",
+    "fluent-ffmpeg": "^2.1.2",
     "lodash": "^4.17.21",
     "openai": "^3.2.1",
     "source-map-support": "^0.5.21",
