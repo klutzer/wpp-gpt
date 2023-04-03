@@ -10,15 +10,15 @@
   },
   "devDependencies": {
     "@types/fluent-ffmpeg": "^2.1.21",
-    "@types/lodash": "^4.14.186",
-    "@types/node": "^18.15.0",
-    "rimraf": "^4.4.0",
-    "tsc-alias": "^1.8.3",
-    "tsup": "^6.6.3",
-    "typescript": "^4.9.5"
+    "@types/lodash": "^4.14.192",
+    "@types/node": "^18.15.11",
+    "rimraf": "^4.4.1",
+    "tsc-alias": "^1.8.5",
+    "tsup": "^6.7.0",
+    "typescript": "^5.0.3"
   },
   "dependencies": {
-    "@wppconnect-team/wppconnect": "^1.22.0",
+    "@wppconnect-team/wppconnect": "~1.22.0",
     "dotenv": "^16.0.3",
     "fluent-ffmpeg": "^2.1.2",
     "lodash": "^4.17.21",
